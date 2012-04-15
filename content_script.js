@@ -1,12 +1,12 @@
 if (document.body) {
-	var selector = 'srmdbg';
+	var selector = 'wktdbg';
 	var elements = $("["+selector+"]");
 	var rightclicked_item = null;
 
 	var sendToIde = function(_host){
 		var clazzName = $(this).data('clazzName');
 		console.log('Sending to your IDE = ' + clazzName);
-	    $.ajax('http://'+_host, {data:{src:clazzName}, method:'get', success:function(){
+	    $.ajax('http://'+_host, {data:{cn:clazzName}, method:'get', success:function(){
 	    	
 	    }});
 	    return false;
