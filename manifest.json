@@ -1,0 +1,24 @@
+{
+  "name": "Wicket Open In IDEA",
+  "version": "1.0",
+  "minimum_chrome_version": "6.0.0",
+  "description": "",
+  "background_page": "background.html",
+  "permissions": [
+    "contextMenus", "tabs", "http://*/*", "https://*/*"
+  ],
+  "icons": {
+    "16": "wicket_16.png",
+    "48": "wicket_48.png",
+    "128": "wicket.png"
+  },
+  "options_page": "options.html",
+  "content_scripts": [ 
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["jquery.min.js","content_script.js"],
+      "run_at": "document_end",
+      "all_frames": false
+    }
+  ]  
+}

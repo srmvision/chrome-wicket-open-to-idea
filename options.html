@@ -1,0 +1,60 @@
+<html>
+<head><title>Wicket Debug Options</title></head>
+  <script type="text/javascript" src="wicket-idea.js"></script>
+  <script type="text/javascript">
+
+  // Saves options to localStorage.
+  function save_options() {
+    var host = document.getElementById("host");
+    localStorage["host"] = host.value;
+    var context = document.getElementById('context');
+    localStorage["context"] = context.value;
+
+    createContextMenu();
+
+    // Update status to let user know options were saved.
+    var status = document.getElementById("status");
+    status.innerHTML = "Options Saved.";
+    setTimeout(function(){
+      status.innerHTML = '';
+    }, 3000);
+  }
+
+  // Restores select box state to saved value from localStorage.
+  function restore_options() {
+    var host = localStorage["host"];
+    if (!host) {
+      host = 'localhost:10462';
+    }
+
+    var hostEl = document.getElementById("host");
+    hostEl.value=host;
+
+    var context = localStorage['context'];
+    if (!context){
+        context = 'http://*/*, https://*/*';
+    }
+
+    var contextEl = document.getElementById('context');
+    contextEl.value = context;
+  }
+
+  </script>
+
+  <body onload="restore_options()">
+    
+    <form action="javascript:save_options()">
+      <label for="host">IDE Host :</label>
+      <p>Please input the URL to access your IDE in the form of HOST:PORT (default 'localhost:10462').</p>
+      <input type='text' name="host" id='host' value=''/>
+      <br/>
+      <label for="context">Context Menu Presence Host :</label>
+      <p>Define the hosts where you want to see the context menu item (in the form 'http://localhost/*, http://*.srmvision.com/*')
+       (default 'http://*/*, https://*/*').</p>
+      <input type='text' name="context" id='context' value='' style='width:100%'/>
+      <hr/>
+      <button type="submit">Save</button>
+      <div id="status"></div>
+    </form>
+  </body>
+</html>
