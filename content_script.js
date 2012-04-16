@@ -3,8 +3,8 @@ if (document.body) {
 	var elements = $("["+selector+"]");
 	var rightclicked_item = null;
 
-	var sendToIde = function(_host){
-		var clazzName = $(this).data('clazzName');
+	var sendToIde = function(_self, _host){
+		var clazzName = $(_self).data('clazzName');
 		console.log('Sending to your IDE = ' + clazzName);
 	    $.ajax('http://'+_host, {data:{cn:clazzName}, method:'get', success:function(){
 	    	
@@ -18,10 +18,10 @@ if (document.body) {
 		}));
 	  	var $ul = $("<ul>");
 	  	for (var i = 0; i < _elt.length; i++) {
-	  		var debugAttr = $(_elt[i]).attr('srmdbg');
+	  		var debugAttr = $(_elt[i]).attr(selector);
 	  		var $li = $("<li>");
 	  		var $a = $("<a>").attr('href', '#').bind('click', function(){
-	  			sendToIde(_host);
+	  			sendToIde(this, _host);
 	  		});
 	  		$a.data('clazzName', debugAttr).append(debugAttr);
 	  		$li.append($a);
