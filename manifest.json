@@ -1,9 +1,13 @@
 {
   "name": "Wicket Open In IDEA",
-  "version": "1.0",
-  "minimum_chrome_version": "6.0.0",
-  "description": "",
-  "background_page": "background.html",
+  "version": "1.1",
+  "minimum_chrome_version": "18",
+  "manifest_version":2,
+  "description": "Simple plugin allowing to send fully qualified class name to your IDEA instance (using wktdbg attr), 
+  requires the IDEA plugin from https://github.com/srmvision/wicket-open-in-idea-plugin.",
+  "background": {
+    "scripts": ["jquery.min.js", "wicket-idea.js"]
+  },
   "permissions": [
     "contextMenus", "tabs", "http://*/*", "https://*/*"
   ],
@@ -16,7 +20,8 @@
   "content_scripts": [ 
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery.min.js","content_script.js"],
+      "js": ["jquery.min.js", "bootstrap-modal.js", "wktdbg.js"],
+      "css" : ["wktdbg.css"],
       "run_at": "document_end",
       "all_frames": false
     }
