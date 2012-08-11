@@ -3,19 +3,44 @@ if (document.body) {
 	var elements = $("["+selector+"]");
 	var rightclicked_item = null;
 
+	$('<div class="modal hide" id="wktdbg"><div class="modal-header">'+
+	  '<button type="button" class="close" data-dismiss="modal">×</button>'+
+	  '<h3>Chrome Debug to IDE</h3>'+
+	  '</div>'+
+	  '<div class="modal-body">'+
+	  '<p></p>'+
+	  '</div>'+
+	  '<div class="modal-footer">'+
+	  '<p class="info"></p>' +
+	  '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>'+
+	  '</div>'+
+	'</div>').appendTo(document.body);
+	var $div = $("#wktdbg .modal-body p");
+	var $feedback = $("#wktdbg .modal-footer p.info");
+
+	var fbText = function(_txt, _timeout){
+		$feedback.text(_txt);
+		if (_timeout){
+			setTimeout(function(){
+				fbText('');
+			}, _timeout);
+		}
+	}
+
 	var sendToIde = function(_self, _host){
 		var clazzName = $(_self).data('clazzName');
 		console.log('Sending to your IDE = ' + clazzName);
+		fbText('Sending to your IDE...');
 	    $.ajax('http://'+_host, {data:{cn:clazzName}, method:'get', success:function(){
-	    	
+	    	fbText('Sent to your IDE !', 5000);
+	    }, error: function(){
+	    	fbText('Unable to send to your IDE !', 10000);
 	    }});
 	    return false;
 	};
-	var buildModal = function(_div, _elt, _host){
-		_div.children().remove();
-		_div.append($("<a href='#'><strong>CLOSE</strong></a>").bind('click', function(){
-			_div.hide();
-		}));
+	var buildModal = function(_elt, _host){
+		$div.children().remove();
+		fbText('');
 	  	var $ul = $("<ul>");
 	  	for (var i = 0; i < _elt.length; i++) {
 	  		var debugAttr = $(_elt[i]).attr(selector);
@@ -27,9 +52,8 @@ if (document.body) {
 	  		$li.append($a);
 	  		$ul.append($li);
 	  	};
-		_div.append($ul);
-		$(document.body).append(_div);
-		_div.show();
+		$div.append($ul);
+		$('#wktdbg').modal('show');
 	};
 
 	document.body.addEventListener("contextmenu", function(e) {
@@ -38,11 +62,7 @@ if (document.body) {
 	document.body.addEventListener("click", function() {
 	    rightclicked_item = null;
 	});
-	var $div = $("<div>").css({'background-color':'white',
-							   'position':'absolute', 
-							   'z-index':'40000',
-							   'height':'300px',
-							   'overflow':'auto'});
+
 	chrome.extension.onRequest.addListener(
 				  function(request, sender, sendResponse) {
 				  	if (elements.length){
@@ -51,7 +71,7 @@ if (document.body) {
 					  	if ($clicked.attr(selector)){
 					  		elt.push(0, $clicked);
 					  	}
-						buildModal($div, elt, request.host);				  	
+						buildModal(elt, request.host);				  	
 				  	}else{
 				  		console.log(" ------ WICKET DEBUG : Nothing found ------");
 				  	}

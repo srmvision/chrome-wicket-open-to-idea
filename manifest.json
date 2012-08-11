@@ -20,7 +20,8 @@
   "content_scripts": [ 
     {
       "matches": ["http://*/*", "https://*/*"],
-      "js": ["jquery.min.js","content_script.js"],
+      "js": ["jquery.min.js", "bootstrap-modal.js", "wktdbg.js"],
+      "css" : ["wktdbg.css"],
       "run_at": "document_end",
       "all_frames": false
     }
