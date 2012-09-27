@@ -1,21 +1,7 @@
 if (document.body) {
 	var selector = 'wktdbg';
-	var elements = $("["+selector+"]");
 	var rightclicked_item = null;
 
-	$('<div class="modal hide" id="wktdbg"><div class="modal-header">'+
-	  '<button type="button" class="close" data-dismiss="modal">×</button>'+
-	  '<h3>Chrome Debug to IDE</h3>'+
-	  '</div>'+
-	  '<div class="modal-body">'+
-	  '<p></p>'+
-	  '</div>'+
-	  '<div class="modal-footer">'+
-	  '<p class="info"></p>' +
-	  '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>'+
-	  '</div>'+
-	'</div>').appendTo(document.body);
-	var $div = $("#wktdbg .modal-body p");
 	var $feedback = $("#wktdbg .modal-footer p.info");
 
 	var fbText = function(_txt, _timeout){
@@ -39,6 +25,22 @@ if (document.body) {
 	    return false;
 	};
 	var buildModal = function(_elt, _host){
+		var $div = $("#wktdbg .modal-body p");
+		if ($div.length == 0){
+			$('<div class="modal hide" id="wktdbg"><div class="modal-header">'+
+		  '<button type="button" class="close" data-dismiss="modal">×</button>'+
+		  '<h3>Chrome Debug to IDE</h3>'+
+		  '</div>'+
+		  '<div class="modal-body">'+
+		  '<p></p>'+
+		  '</div>'+
+		  '<div class="modal-footer">'+
+		  '<p class="info"></p>' +
+		  '<a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>'+
+		  '</div>'+
+		  '</div>').appendTo(document.body);
+		  $div = $("#wktdbg .modal-body p");
+		}
 		$div.children().remove();
 		fbText('');
 	  	var $ul = $("<ul>");
@@ -65,6 +67,7 @@ if (document.body) {
 
 	chrome.extension.onRequest.addListener(
 				  function(request, sender, sendResponse) {
+			  		var elements = $("["+selector+"]");
 				  	if (elements.length){
 				  		var $clicked = $(rightclicked_item);
 					  	var elt = $clicked.parents('['+selector+']');
